@@ -29,19 +29,19 @@ How to Use
 ----------
 
 Setting up Flask-CouchDBKit is incredibly easy. All you have to do is to
-create a :class:`CouchDBKit` object and declare the model using the provided
-:class:`Document` class, which will automatically associate the document
-object with the database instance::
+create a :class:`CouchDBKit` object and declare the model using the
+:class:`Document` base class, which behaves just like regular Python class
+but has a database instance associate to it::
 
     from flask import Flask
-    from flaskext.couchdbkit import CouchDBKit, Document, StringProperty
+    from flaskext.couchdbkit import CouchDBKit
     app = Flask(__name__)
     app.config['COUCHDB_DATABASE'] = 'testapp'
     couchdb = CouchDBKit(app)
     
-    class Guestbook(Document):
-        author = StringProperty()
-        content = StringProperty()
+    class Guestbook(couchdb.Document):
+        author = couchdb.StringProperty()
+        content = couchdb.StringProperty()
 
 The extension make use of three configuration variables, but only
 ``COUCHDB_DATABASE`` is required. The database will be created if it does

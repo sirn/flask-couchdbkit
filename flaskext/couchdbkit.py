@@ -15,18 +15,20 @@ from flask import current_app
 from restkit import SimplePool
 from couchdbkit import Server
 from couchdbkit.loaders import FileSystemDocsLoader
-from couchdbkit.schema import Document as BaseDocument, DocumentSchema, \
-    Property, StringProperty, IntegerProperty, DecimalProperty, \
-    BooleanProperty, FloatProperty, DateTimeProperty, DateProperty, \
-    TimeProperty, SchemaProperty, SchemaListProperty, ListProperty, \
-    DictProperty, StringListProperty
 
 
-__all__ = ['CouchDBKit', 'Document', 'DocumentSchema', 'Property', \
-    'StringProperty', 'IntegerProperty', 'DecimalProperty', \
-    'BooleanProperty', 'FloatProperty', 'DateTimeProperty', 'DateProperty', \
-    'TimeProperty', 'SchemaProperty', 'SchemaListProperty', 'ListProperty', \
-    'DictProperty', 'StringListProperty']
+__all__ = ['CouchDBKit']
+
+
+def _include_couchdbkit(obj):
+    module = couchdbkit.schema
+    for key in ('Document', 'DocumentSchema', 'Property', 'StringProperty',
+                'IntegerProperty', 'DecimalProperty', 'BooleanProperty',
+                'FloatProperty', 'DateTimeProperty', 'DateProperty',
+                'TimeProperty', 'SchemaProperty', 'SchemaListProperty',
+                'ListProperty', 'DictProperty', 'StringListProperty'):
+        if not hasattr(obj, key):
+            setattr(obj, key, getattr(module, key))
 
 
 class CouchDBKit(object):
@@ -49,6 +51,9 @@ class CouchDBKit(object):
         self.init_db()
         
         app.couchdbkit_manager = self
+        
+        _include_couchdbkit(self)
+        self.Document.set_db(self.db)
     
     def init_db(self):
         """Initialize database object from the `COUCHDB_DATABASE`
@@ -57,16 +62,11 @@ class CouchDBKit(object):
         """
         dbname = self.app.config.get('COUCHDB_DATABASE')
         self.db = self.server.get_or_create_db(dbname)
+        if hasattr(self, 'Document'):
+            self.Document.set_db(self.db)
     
     def sync(self):
         """Sync the local views with CouchDB server."""
         design_path = os.path.join(self.app.root_path, '_design')
         loader = FileSystemDocsLoader(design_path)
         loader.sync(self.db)
-
-
-class Document(BaseDocument):
-    
-    def __init__(self, *args, **kwargs):
-        super(Document, self).__init__(*args, **kwargs)
-        self.set_db(current_app.couchdbkit_manager.db)
