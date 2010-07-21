@@ -1,0 +1,23 @@
+# Nasty system files
+.DS_Store
+Thumbs.db
+
+# Development stuffs
+*.db
+*.db-journal
+*.pyc
+*.pyo
+
+# zc.bulidout
+.installed.cfg
+bin/
+develop-eggs/
+downloads/
+dist/
+eggs/
+parts/
+*.egg-info
+
+# Application-specific
+dist/
+docs/_build
