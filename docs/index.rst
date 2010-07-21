@@ -43,11 +43,10 @@ but has a database instance associate to it::
         author = couchdb.StringProperty()
         content = couchdb.StringProperty()
 
-The extension make use of three configuration variables, but only
+The extension make use of two configuration variables, but only
 ``COUCHDB_DATABASE`` is required. The database will be created if it does
-not already exists. Two other configuration variables are ``COUCHDB_SERVER``,
-which sets the server to connect to, and ``COUCHDB_KEEPALIVE``, which sets
-the least amount of connection that will be kept open.
+not already exists. The other configuration variable is ``COUCHDB_SERVER``,
+which sets the server to connect to.
 
 Defining Views
 --------------

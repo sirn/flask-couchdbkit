@@ -12,7 +12,6 @@ from __future__ import with_statement, absolute_import
 import os
 import couchdbkit
 from flask import current_app
-from restkit import SimplePool
 from couchdbkit import Server
 from couchdbkit.loaders import FileSystemDocsLoader
 
@@ -41,13 +40,9 @@ class CouchDBKit(object):
     def __init__(self, app):
         app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
         app.config.setdefault('COUCHDB_DATABASE', None)
-        app.config.setdefault('COUCHDB_KEEPALIVE', 2)
-        
-        pool = SimplePool(keepalive=app.config.get('COUCHDB_KEEPALIVE'))
-        server = Server(app.config.get('COUCHDB_SERVER'), pool_instance=pool)
         
         self.app = app
-        self.server = server
+        self.server = Server(app.config.get('COUCHDB_SERVER'))
         self.init_db()
         
         app.couchdbkit_manager = self
