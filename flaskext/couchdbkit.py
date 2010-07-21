@@ -8,7 +8,9 @@
     :copyright: (c) 2010 by Kridsada Thanabulpong.
     :license: BSD, see LICENSE for more details.
 """
+from __future__ import with_statement, absolute_import
 import os
+import couchdbkit
 from flask import current_app
 from restkit import SimplePool
 from couchdbkit import Server
@@ -28,6 +30,11 @@ __all__ = ['CouchDBKit', 'Document', 'DocumentSchema', 'Property', \
 
 
 class CouchDBKit(object):
+    """This class is used to control CouchDB integration to a Flask
+    application.
+    
+    :param app: The application to bind this CouchDBKit instance into.
+    """
     
     def __init__(self, app):
         app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
@@ -44,10 +51,15 @@ class CouchDBKit(object):
         app.couchdbkit_manager = self
     
     def init_db(self):
+        """Initialize database object from the `COUCHDB_DATABASE`
+        configuration variable. If the database does not already exists,
+        it will be created.
+        """
         dbname = self.app.config.get('COUCHDB_DATABASE')
         self.db = self.server.get_or_create_db(dbname)
     
     def sync(self):
+        """Sync the local views with CouchDB server."""
         design_path = os.path.join(self.app.root_path, '_design')
         loader = FileSystemDocsLoader(design_path)
         loader.sync(self.db)
