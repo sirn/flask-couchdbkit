@@ -43,12 +43,9 @@ class CouchDBKit(object):
         
         self.app = app
         self.server = Server(app.config.get('COUCHDB_SERVER'))
-        self.init_db()
-        
-        app.couchdbkit_manager = self
         
         _include_couchdbkit(self)
-        self.Document.set_db(self.db)
+        self.init_db()
     
     def init_db(self):
         """Initialize database object from the `COUCHDB_DATABASE`
@@ -57,8 +54,7 @@ class CouchDBKit(object):
         """
         dbname = self.app.config.get('COUCHDB_DATABASE')
         self.db = self.server.get_or_create_db(dbname)
-        if hasattr(self, 'Document'):
-            self.Document.set_db(self.db)
+        self.Document._db = self.db
     
     def sync(self):
         """Sync the local views with CouchDB server."""
