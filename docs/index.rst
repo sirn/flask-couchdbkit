@@ -44,10 +44,22 @@ but has a database instance associate to it::
         content = couchdb.StringProperty()
 
 The extension make use of three configuration variables, but only
-``COUCHDB_DATABASE`` is required. The database will be created if it does
-not already exists. Two other configuration variables are ``COUCHDB_SERVER``,
-which sets the server to connect to, and ``COUCHDB_KEEPALIVE``, which sets
-the least amount of connection that will be kept open.
+``COUCHDB_DATABASE`` is required. Full list of all available configuration
+variables could be found below:
+
+.. tabularcolumns:: |p{6.5cm}|p{8.5cm}|
+
+=============================== =========================================
+``COUCHDB_SERVER``              The database URI that should be used for
+                                the connection. For example,
+                                
+                                - ``http://localhost:5984/``
+                                - ``http://user:pass@remote:5984/``
+``COUCHDB_DATABASE``            The database name to connect into.
+``COUCHDB_KEEPALIVE``           Amount of connections that should be kept
+                                open in the pool. Setting this to ``None``
+                                will disable it.
+=============================== =========================================
 
 Defining Views
 --------------

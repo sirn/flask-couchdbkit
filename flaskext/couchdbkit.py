@@ -41,10 +41,15 @@ class CouchDBKit(object):
     def __init__(self, app):
         app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
         app.config.setdefault('COUCHDB_DATABASE', None)
-        app.config.setdefault('COUCHDB_KEEPALIVE', 2)
+        app.config.setdefault('COUCHDB_KEEPALIVE', None)
         
-        pool = SimplePool(keepalive=app.config.get('COUCHDB_KEEPALIVE'))
-        server = Server(app.config.get('COUCHDB_SERVER'), pool_instance=pool)
+        server_uri = app.config.get('COUCHDB_SERVER')
+        pool_keepalive = app.config.get('COUCHDB_KEEPALIVE')
+        if pool_keepalive is not None:
+            pool = SimplePool(keepalive=pool_keepalive)
+            server = Server(server_uri, pool_instance=pool)
+        else:
+            server = Server(server_uri)
         
         self.app = app
         self.server = server
