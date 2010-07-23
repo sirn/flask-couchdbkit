@@ -57,8 +57,8 @@ variables could be found below:
                                 - ``http://user:pass@remote:5984/``
 ``COUCHDB_DATABASE``            The database name to connect into.
 ``COUCHDB_KEEPALIVE``           Amount of connections that should be kept
-                                open in the pool. Setting this to ``None``
-                                will disable it.
+                                open in the pool. Set this to ``None`` 
+                                will use the default pool size.
 =============================== =========================================
 
 Defining Views
