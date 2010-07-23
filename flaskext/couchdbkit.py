@@ -41,6 +41,7 @@ class CouchDBKit(object):
         app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
         app.config.setdefault('COUCHDB_DATABASE', None)
         app.config.setdefault('COUCHDB_KEEPALIVE', None)
+        app.config.setdefault('COUCHDB_VIEWS', '_design')
         
         server_uri = app.config.get('COUCHDB_SERVER')
         pool_keepalive = app.config.get('COUCHDB_KEEPALIVE')
@@ -67,6 +68,7 @@ class CouchDBKit(object):
     
     def sync(self):
         """Sync the local views with CouchDB server."""
-        design_path = os.path.join(self.app.root_path, '_design')
+        local_path = self.app.config.get('COUCHDB_VIEWS')
+        design_path = os.path.join(self.app.root_path, local_path)
         loader = FileSystemDocsLoader(design_path)
         loader.sync(self.db)

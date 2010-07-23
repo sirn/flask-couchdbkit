@@ -43,7 +43,7 @@ but has a database instance associate to it::
         author = couchdb.StringProperty()
         content = couchdb.StringProperty()
 
-The extension make use of three configuration variables, but only
+The extension make use of four configuration variables, but only
 ``COUCHDB_DATABASE`` is required. Full list of all available configuration
 variables could be found below:
 
@@ -56,6 +56,8 @@ variables could be found below:
                                 - ``http://localhost:5984/``
                                 - ``http://user:pass@remote:5984/``
 ``COUCHDB_DATABASE``            The database name to connect into.
+``COUCHDB_VIEWS``               Path where views definition are stored.
+                                Default to ``_design``.
 ``COUCHDB_KEEPALIVE``           Amount of connections that should be kept
                                 open in the pool. Set this to ``None`` 
                                 will use the default pool size.
