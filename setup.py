@@ -17,7 +17,7 @@ from setuptools import setup
 
 setup(
     name='Flask-CouchDBKit',
-    version='0.1a2',
+    version='0.2',
     url='http://code.grid.in.th/',
     license='BSD',
     author='Kridsada Thanabulpong',
@@ -34,7 +34,7 @@ setup(
         'CouchDBKit',
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
