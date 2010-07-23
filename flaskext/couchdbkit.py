@@ -8,10 +8,9 @@
     :copyright: (c) 2010 by Kridsada Thanabulpong.
     :license: BSD, see LICENSE for more details.
 """
-from __future__ import with_statement, absolute_import
+from __future__ import absolute_import
 import os
 import couchdbkit
-from flask import current_app
 from couchdbkit import Server
 from restkit import SimplePool
 from couchdbkit.loaders import FileSystemDocsLoader
