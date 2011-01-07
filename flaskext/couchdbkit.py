@@ -12,8 +12,8 @@ from __future__ import absolute_import
 import os
 import couchdbkit
 from couchdbkit import Server
-from restkit import SimplePool
 from couchdbkit.loaders import FileSystemDocsLoader
+from restkit.pool.simple import SimplePool
 
 
 __all__ = ['CouchDBKit']
