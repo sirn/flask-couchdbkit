@@ -1,0 +1,3 @@
+Alan Plum
+* Generalization of CouchDBKit property import.
+* Fix bug #GH-1 regarding SimplePool import.
