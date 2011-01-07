@@ -21,12 +21,9 @@ __all__ = ['CouchDBKit']
 
 def _include_couchdbkit(obj):
     module = couchdbkit.schema
-    for key in ('Document', 'DocumentSchema', 'Property', 'StringProperty',
-                'IntegerProperty', 'DecimalProperty', 'BooleanProperty',
-                'FloatProperty', 'DateTimeProperty', 'DateProperty',
-                'TimeProperty', 'SchemaProperty', 'SchemaListProperty',
-                'ListProperty', 'DictProperty', 'StringListProperty'):
-        if not hasattr(obj, key):
+    for key in (['Document', 'DocumentSchema', 'StaticDocument']
+        + [prop for prop in dir(module) if prop.endswith('Property')]):
+        if hasattr(module, key) and not hasattr(obj, key):
             setattr(obj, key, getattr(module, key))
 
 
