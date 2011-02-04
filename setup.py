@@ -30,7 +30,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'RestKit',
+        'restkit>=3.0',
         'CouchDBKit',
     ],
     classifiers=[

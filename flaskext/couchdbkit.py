@@ -13,7 +13,7 @@ import os
 import couchdbkit
 from couchdbkit import Server
 from couchdbkit.loaders import FileSystemDocsLoader
-from restkit.conn import TConnectionManager
+from restkit.manager import Manager
 
 
 __all__ = ['CouchDBKit']
@@ -43,8 +43,8 @@ class CouchDBKit(object):
         server_uri = app.config.get('COUCHDB_SERVER')
         pool_keepalive = app.config.get('COUCHDB_KEEPALIVE')
         if pool_keepalive is not None:
-            pool = TConnectionManager(keepalive=pool_keepalive)
-            server = Server(server_uri, pool_instance=pool)
+            mgr = Manager(max_conn=pool_keepalive)
+            server = Server(server_uri, manager=mgr)
         else:
             server = Server(server_uri)
 
