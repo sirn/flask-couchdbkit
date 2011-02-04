@@ -1,3 +1,6 @@
 Alan Plum
 * Generalization of CouchDBKit property import.
 * Fix bug #GH-1 regarding SimplePool import.
+
+Benoit Chesneau
+* Compatibility with reskit 3.0.
