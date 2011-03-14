@@ -47,10 +47,10 @@ class CouchDBKit(object):
         bound.
         """
         self.app = app
-        app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
-        app.config.setdefault('COUCHDB_DATABASE', None)
-        app.config.setdefault('COUCHDB_KEEPALIVE', None)
-        app.config.setdefault('COUCHDB_VIEWS', '_design')
+        self.app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
+        self.app.config.setdefault('COUCHDB_DATABASE', None)
+        self.app.config.setdefault('COUCHDB_KEEPALIVE', None)
+        self.app.config.setdefault('COUCHDB_VIEWS', '_design')
 
         server_uri = app.config.get('COUCHDB_SERVER')
         pool_keepalive = app.config.get('COUCHDB_KEEPALIVE')
