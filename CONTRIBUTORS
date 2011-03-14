@@ -4,3 +4,6 @@ Alan Plum
 
 Benoit Chesneau
 * Compatibility with reskit 3.0.
+
+Matt Dawson
+* Add app object late-binding support.

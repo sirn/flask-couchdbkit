@@ -7,6 +7,8 @@ Thumbs.db
 *.db-journal
 *.pyc
 *.pyo
+*.swp
+*.swo
 
 # zc.bulidout
 .installed.cfg

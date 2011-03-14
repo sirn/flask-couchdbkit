@@ -5,7 +5,7 @@
 
     Flask extension that provides integration with CouchDBKit.
 
-    :copyright: (c) 2010 by Kridsada Thanabulpong.
+    :copyright: (c) 2011 by Kridsada Thanabulpong.
     :license: BSD, see LICENSE for more details.
 """
 from __future__ import absolute_import
@@ -31,10 +31,22 @@ class CouchDBKit(object):
     """This class is used to control CouchDB integration to a Flask
     application.
 
-    :param app: The application to bind this CouchDBKit instance into.
+    :param app: The application to which this CouchDBKit should be bound. If an
+    app is not provided at initialization time, it may be provided later by
+    calling `init_app` manually.
     """
+    def __init__(self, app=None):
+        _include_couchdbkit(self)
+        if app is not None:
+            self.init_app(app)
 
-    def __init__(self, app):
+    def init_app(self, app):
+        """Bind an app to a CouchDBKit instance and initialize the database.
+
+        :param app: The application to which the CouchDBKit instance should be
+        bound.
+        """
+        self.app = app
         app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
         app.config.setdefault('COUCHDB_DATABASE', None)
         app.config.setdefault('COUCHDB_KEEPALIVE', None)
@@ -48,10 +60,7 @@ class CouchDBKit(object):
         else:
             server = Server(server_uri)
 
-        self.app = app
         self.server = server
-
-        _include_couchdbkit(self)
         self.init_db()
 
     def init_db(self):
