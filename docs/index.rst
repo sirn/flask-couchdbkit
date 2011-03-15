@@ -43,6 +43,17 @@ but has a database instance associate to it::
         author = couchdb.StringProperty()
         content = couchdb.StringProperty()
 
+In case if you want late-binding of `CouchDBKit` object, you can use
+:meth:`CouchDBKit.init_app` to bind it to `app` object after it has been
+created::
+
+   from flask import Flask
+   couchdb = CouchDBKit()
+   
+   from flaskext.couchdbkit import CouchDBKit
+   app = Flask(__name__)
+   couchdb.init_app(app)
+
 The extension make use of four configuration variables, but only
 ``COUCHDB_DATABASE`` is required. Full list of all available configuration
 variables could be found below:
