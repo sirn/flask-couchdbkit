@@ -5,7 +5,7 @@
 
     Flask extension that provides integration with CouchDBKit.
 
-    :copyright: (c) 2011 by Kridsada Thanabulpong.
+    :copyright: (c) 2010–2011 by Kridsada Thanabulpong.
     :license: BSD, see LICENSE for more details.
 """
 from __future__ import absolute_import
