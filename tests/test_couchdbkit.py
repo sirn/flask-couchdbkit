@@ -70,7 +70,7 @@ class InitializationTestCase(unittest.TestCase):
         self.couchdb = CouchDBKit(self.app)
         self.assertIn('test_db_2', self.couchdb.server.all_dbs())
 
-    def test_late_initilization(self):
+    def test_late_initialization(self):
         self.couchdb = CouchDBKit()
         self.couchdb.init_app(self.app)
         self.assertIn('test_db_2', self.couchdb.server.all_dbs())
