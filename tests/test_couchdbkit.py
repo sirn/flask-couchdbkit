@@ -2,7 +2,6 @@ from __future__ import with_statement
 
 import unittest
 from datetime import datetime
-from uuid import uuid4
 
 import flask
 from flaskext.couchdbkit import CouchDBKit
