@@ -7,3 +7,4 @@ Benoit Chesneau
 
 Matt Dawson
 * Add app object late-binding support.
+* Add tests.
