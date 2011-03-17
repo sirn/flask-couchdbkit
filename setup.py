@@ -15,6 +15,13 @@ Links
 from setuptools import setup
 
 
+def run_tests():
+    import os, sys
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'tests'))
+    from test_couchdbkit import suite
+    return suite()
+
+
 setup(
     name='Flask-CouchDBKit',
     version='0.3.2',
@@ -42,5 +49,6 @@ setup(
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
-    ]
+    ],
+    test_suite='__main__.run_tests'
 )
