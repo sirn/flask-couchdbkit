@@ -4,8 +4,7 @@ Flask-CouchDBKit
 .. module:: flaskext.couchdbkit
 
 **Flask-CouchDBKit** provides simple integration with `CouchDB`_ database
-using the powerful `CouchDBKit`_ library.  This module is currently under
-development, the document is lacking and its API may change without warning.
+using the powerful `CouchDBKit`_ library.
 
 .. _CouchDB: http://couchdb.org/
 .. _CouchDBKit: http://couchdbkit.org/
@@ -13,7 +12,7 @@ development, the document is lacking and its API may change without warning.
 Installation
 ------------
 
-Assuming you already have CouchDB installed (if you don't, look at the
+Assuming you already have CouchDB installed (and if you don't, look at the
 `CouchDB Installation Guide`_), you can install the extension using one of
 the following commands::
 
@@ -28,49 +27,52 @@ or if you are required to use easy_install::
 How to Use
 ----------
 
-Setting up Flask-CouchDBKit is incredibly easy. All you have to do is to
-create a :class:`CouchDBKit` object and declare the model using the
-:class:`Document` base class, which behaves just like regular Python class
-but has a database instance associate to it::
+Flask-CouchDBKit is a thin wrapper around CouchDBKit. All you have to do is
+create a :class:`CouchDBKit` object and declare models using the
+:class:`Document` base class. These objects behave as you would expect their
+non-Flask counterparts to behave, so see the `CouchDBKit`_ documentation for
+additional guidance.
+
+Setting up Flask-CouchDBKit is easy::
 
     from flask import Flask
     from flaskext.couchdbkit import CouchDBKit
     app = Flask(__name__)
     app.config['COUCHDB_DATABASE'] = 'testapp'
     couchdb = CouchDBKit(app)
-    
+
     class Guestbook(couchdb.Document):
         author = couchdb.StringProperty()
         content = couchdb.StringProperty()
 
-In case if you want late-binding of `CouchDBKit` object, you can use
-:meth:`CouchDBKit.init_app` to bind it to `app` object after it has been
+In case you want late-binding of a `CouchDBKit` object, you can use
+:meth:`CouchDBKit.init_app` to bind it to your `app` object after it has been
 created::
 
    from flask import Flask
    couchdb = CouchDBKit()
-   
+
    from flaskext.couchdbkit import CouchDBKit
    app = Flask(__name__)
    couchdb.init_app(app)
 
-The extension make use of four configuration variables, but only
-``COUCHDB_DATABASE`` is required. Full list of all available configuration
-variables could be found below:
+The extension makes use of four configuration variables, but only
+``COUCHDB_DATABASE`` is required. The full list of all available configuration
+variables can be found below:
 
 .. tabularcolumns:: |p{6.5cm}|p{8.5cm}|
 
 =============================== =========================================
 ``COUCHDB_SERVER``              The database URI that should be used for
                                 the connection. For example,
-                                
+
                                 - ``http://localhost:5984/``
                                 - ``http://user:pass@remote:5984/``
 ``COUCHDB_DATABASE``            The database name to connect into.
 ``COUCHDB_VIEWS``               Path where views definition are stored.
                                 Default to ``_design``.
 ``COUCHDB_KEEPALIVE``           Amount of connections that should be kept
-                                open in the pool. Set this to ``None`` 
+                                open in the pool. Set this to ``None``
                                 will use the default pool size.
 =============================== =========================================
 
@@ -78,8 +80,8 @@ Defining Views
 --------------
 
 Views are defined in a directory named :file:`_design` inside the project
-directory. This is done such way to be compatible with `CouchApp`_ views.
-Let's look at the typical structure of such views::
+directory. This is done in a way that is compatible with `CouchApp`_ views.
+Let's look at the typical structure of a typical views directory::
 
     /_design
         /guestbook
@@ -120,7 +122,7 @@ To retrieve documents from the design document, you can use
 
     >>> Document.view('guestbook/all')
 
-For more information regarding views, please read 
+For more information regarding views, please read
 `Introduction to CouchDB views`_.
 
 .. _CouchApp: http://github.com/couchapp/couchapp/
