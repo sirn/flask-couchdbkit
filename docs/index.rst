@@ -45,14 +45,14 @@ Setting up Flask-CouchDBKit is easy::
         author = couchdb.StringProperty()
         content = couchdb.StringProperty()
 
-In case you want late-binding of a `CouchDBKit` object, you can use
+In case you want late-binding of a :class:`CouchDBKit` object, you can use
 :meth:`CouchDBKit.init_app` to bind it to your `app` object after it has been
 created::
 
-   from flask import Flask
+   from flaskext.couchdbkit import CouchDBKit
    couchdb = CouchDBKit()
 
-   from flaskext.couchdbkit import CouchDBKit
+   from flask import Flask
    app = Flask(__name__)
    couchdb.init_app(app)
 
