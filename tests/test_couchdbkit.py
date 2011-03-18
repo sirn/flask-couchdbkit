@@ -68,12 +68,12 @@ class InitializationTestCase(unittest.TestCase):
 
     def test_init_db(self):
         self.couchdb = CouchDBKit(self.app)
-        self.assertIn('test_db_2', self.couchdb.server.all_dbs())
+        self.assertTrue(self.couchdb.server.all_dbs().index('test_db_2'))
 
     def test_late_initialization(self):
         self.couchdb = CouchDBKit()
         self.couchdb.init_app(self.app)
-        self.assertIn('test_db_2', self.couchdb.server.all_dbs())
+        self.assertTrue(self.couchdb.server.all_dbs().index('test_db_2'))
 
 
 class DocLoaderTestCase(unittest.TestCase):
