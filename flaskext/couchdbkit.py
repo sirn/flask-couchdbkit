@@ -13,7 +13,10 @@ import os
 import couchdbkit
 from couchdbkit import Server
 from couchdbkit.loaders import FileSystemDocsLoader
-from restkit.manager import Manager
+from socketpool import ConnectionPool
+from restkit.conn import Connection
+
+
 
 
 __all__ = ['CouchDBKit']
@@ -49,16 +52,20 @@ class CouchDBKit(object):
         self.app = app
         self.app.config.setdefault('COUCHDB_SERVER', 'http://localhost:5984/')
         self.app.config.setdefault('COUCHDB_DATABASE', None)
-        self.app.config.setdefault('COUCHDB_KEEPALIVE', None)
+        self.app.config.setdefault('COUCHDB_KEEPALIVE', 10)
         self.app.config.setdefault('COUCHDB_VIEWS', '_design')
+        self.app.config.setdefault('COUCHDB_BACKEND', 'thread')
 
         server_uri = app.config.get('COUCHDB_SERVER')
-        pool_keepalive = app.config.get('COUCHDB_KEEPALIVE')
-        if pool_keepalive is not None:
-            mgr = Manager(max_conn=pool_keepalive)
-            server = Server(server_uri, manager=mgr)
-        else:
-            server = Server(server_uri)
+
+        # define pool
+        pool_keepalive = int(app.config.get('COUCHDB_KEEPALIVE'))
+        pool_backend = app.config.get('COUCHDB_BACKEND')
+        pool = ConnectionPool(Connection, max_size=pool_keepalive,
+                              backend=pool_backend)
+
+        # set server connection
+        server = Server(server_uri, pool=pool)
 
         self.server = server
         self.init_db()
