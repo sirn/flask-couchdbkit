@@ -59,13 +59,6 @@ class InitializationTestCase(unittest.TestCase):
     def tearDown(self):
         del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
 
-    def test_connection_manager(self):
-        self.app.config['COUCHDB_KEEPALIVE'] = 20
-        self.couchdb = CouchDBKit(self.app)
-        server = self.couchdb.server
-        self.assertEqual(server.res.client._manager.max_conn,
-                         self.app.config['COUCHDB_KEEPALIVE'])
-
     def test_init_db(self):
         self.couchdb = CouchDBKit(self.app)
         self.assertTrue(self.couchdb.server.all_dbs().index('test_db_2'))
