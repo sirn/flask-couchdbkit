@@ -24,7 +24,7 @@ def run_tests():
 
 setup(
     name='Flask-CouchDBKit',
-    version='0.3.3',
+    version='0.3.5',
     url='http://code.grid.in.th/',
     license='BSD',
     author='Kridsada Thanabulpong',
