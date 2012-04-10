@@ -28,24 +28,27 @@ class SchemaTestCase(unittest.TestCase):
 
         self.app = app
         self.couchdb = couchdb
-        self.db = self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
+        with app.app_context():
+            self.db = self.couchdb.db
 
     def tearDown(self):
-        del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
+        del self.db.server[self.db.dbname]
 
     def test_create(self):
-        todo = self.Todo(title='First Todo', text='Some text.')
-        todo.save()
-        self.assertTrue(self.db.doc_exist(todo._id))
+        with self.app.app_context():
+            todo = self.Todo(title='First Todo', text='Some text.')
+            todo.save()
+            self.assertTrue(self.db.doc_exist(todo._id))
 
     def test_field_validation(self):
         self.assertRaises(BadValueError, self.Todo, title=1, text='More text.')
 
     def test_retrieve(self):
-        todo = self.Todo(title='2nd Todo', text='Some text.')
-        todo.save()
-        retrieved = self.Todo.get(todo._id)
-        self.assertEqual(retrieved.title, '2nd Todo')
+        with self.app.app_context():
+            todo = self.Todo(title='2nd Todo', text='Some text.')
+            todo.save()
+            retrieved = self.Todo.get(todo._id)
+            self.assertEqual(retrieved.title, '2nd Todo')
 
 
 class InitializationTestCase(unittest.TestCase):
@@ -57,16 +60,19 @@ class InitializationTestCase(unittest.TestCase):
         self.app = app
 
     def tearDown(self):
-        del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
+        with self.app.app_context():
+            del self.couchdb.db.server[self.app.config['COUCHDB_DATABASE']]
 
     def test_init_db(self):
         self.couchdb = CouchDBKit(self.app)
-        self.assertTrue(self.couchdb.server.all_dbs().index('test_db_2'))
+        with self.app.app_context():
+            self.assertTrue(self.couchdb.db.server.all_dbs().index('test_db_2'))
 
     def test_late_initialization(self):
         self.couchdb = CouchDBKit()
         self.couchdb.init_app(self.app)
-        self.assertTrue(self.couchdb.server.all_dbs().index('test_db_2'))
+        with self.app.app_context():
+            self.assertTrue(self.couchdb.db.server.all_dbs().index('test_db_2'))
 
 
 class DocLoaderTestCase(unittest.TestCase):
@@ -76,22 +82,25 @@ class DocLoaderTestCase(unittest.TestCase):
         app.config['COUCHDB_DATABASE'] = 'test_db_3'
         app.config['TESTING'] = True
         couchdb = CouchDBKit(app)
-        self.Todo = make_todo_model(couchdb)
+        
+        with app.app_context():
+            self.Todo = make_todo_model(couchdb)
 
-        self.Todo(title='First Todo', text='Some text.').save()
-        self.Todo(title='Second Todo', text='More text.', done=True).save()
-        self.Todo(title='Third Todo', text='Even more text.').save()
+            self.Todo(title='First Todo', text='Some text.').save()
+            self.Todo(title='Second Todo', text='More text.', done=True).save()
+            self.Todo(title='Third Todo', text='Even more text.').save()
 
         self.app = app
         self.couchdb = couchdb
 
     def tearDown(self):
-        del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
+        with self.app.app_context():
+            del self.couchdb.db.server[self.app.config['COUCHDB_DATABASE']]
 
     def test_doc_loader(self):
-        self.couchdb.sync()
-        results = [row for row in self.Todo.view('todos/status_count',
-                   group=True)]
+        with self.app.app_context():
+            self.couchdb.sync()
+            results = self.Todo.view('todos/status_count', group=True).all()
         self.assertFalse(results[0]['key'])
         self.assertEqual(results[0]['value'], 2)
 
@@ -122,7 +131,8 @@ class BasicAppTestCase(unittest.TestCase):
         self.couchdb.sync()
 
     def tearDown(self):
-        del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
+        with self.app.app_context():
+            del self.couchdb.server[self.app.config['COUCHDB_DATABASE']]
 
     def test_basic_insert(self):
         c = self.app.test_client()
