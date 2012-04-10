@@ -66,6 +66,7 @@ class InitializationTestCase(unittest.TestCase):
     def test_init_db(self):
         self.couchdb = CouchDBKit(self.app)
         with self.app.app_context():
+            # the jump over db is needed, since get_or_create is done at first usage
             self.assertTrue(self.couchdb.db.server.all_dbs().index('test_db_2'))
 
     def test_late_initialization(self):
