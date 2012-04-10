@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime
 
 import flask
-from flaskext.couchdbkit import CouchDBKit
+from flask.ext.couchdbkit import CouchDBKit
 from couchdbkit.exceptions import BadValueError
 
 
