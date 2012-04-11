@@ -31,8 +31,7 @@ setup(
     author_email='sirn@ogsite.net',
     description='Flask extension that provides integration with CouchDBKit.',
     long_description=__doc__,
-    packages=['flaskext'],
-    namespace_packages=['flaskext'],
+    py_modules=['flask_couchdbkit'],
     zip_safe=False,
     platforms='any',
     install_requires=[
